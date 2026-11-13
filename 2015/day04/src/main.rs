@@ -2,8 +2,8 @@ use std::error::Error;
 use std::fs;
 
 struct Solution {
-    part1:i32,
-    part2:i32
+    part1: i32,
+    part2: i32,
 }
 
 fn search_md5(input: &String, leading: i32) -> i32 {
@@ -11,20 +11,19 @@ fn search_md5(input: &String, leading: i32) -> i32 {
     loop {
         let guess = format!("{0}{1}", input, i);
         let hash = format!("{:x}", md5::compute(guess));
-        
-        if hash.starts_with(&"0".repeat(leading as usize)) {
-            return i
-        }
-        i+=1;
-    }
 
+        if hash.starts_with(&"0".repeat(leading as usize)) {
+            return i;
+        }
+        i += 1;
+    }
 }
 
-fn main() -> Result<(), Box<dyn Error>>{
+fn main() -> Result<(), Box<dyn Error>> {
     let file = fs::read_to_string("./src/input.txt")?;
     let input = file.lines().collect();
     // let results = "ckczppom".to_string();
-    let mut solution = Solution { part1:0, part2: 0 };
+    let mut solution = Solution { part1: 0, part2: 0 };
 
     println!("'{}'", input);
 

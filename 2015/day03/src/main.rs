@@ -2,7 +2,7 @@ use std::{collections::HashSet, error::Error, fs, hash::Hash};
 
 struct Solution {
     part1: i32,
-    part2: i32
+    part2: i32,
 }
 
 #[derive(Eq, Hash, PartialEq, Debug, Clone, Copy)]
@@ -14,7 +14,7 @@ struct Point {
 #[derive(Debug)]
 struct Santa {
     house: Point,
-    seen: HashSet<Point>
+    seen: HashSet<Point>,
 }
 
 impl Santa {
@@ -23,10 +23,7 @@ impl Santa {
         let house = Point::new(0, 0);
         seen.insert(house);
 
-        Self {
-            house,
-            seen
-        }
+        Self { house, seen }
     }
 }
 
@@ -36,7 +33,7 @@ impl Point {
     }
 
     #[cfg(test)]
-    fn get_cords(&self) -> (i32, i32){
+    fn get_cords(&self) -> (i32, i32) {
         (self.x, self.y)
     }
 
@@ -46,16 +43,15 @@ impl Point {
             '>' => (1, 0),
             'v' => (0, -1),
             '^' => (0, 1),
-            _ => (0, 0)
+            _ => (0, 0),
         };
 
         self.x += x;
         self.y += y;
-    } 
+    }
 }
 
 fn get_houses(instuctions: String) -> i32 {
-    
     // let mut position = Point::new(0,0);
     // let mut seen: HashSet<Point> = HashSet::new();
 
@@ -78,20 +74,14 @@ fn get_houses(instuctions: String) -> i32 {
 }
 
 fn get_houses_with_robot(instuctions: String) -> i32 {
-    
     // let mut position = Point::new(0,0);
     // let mut seen: HashSet<Point> = HashSet::new();
 
     let mut santa = Santa::new();
     let mut robot = Santa::new();
 
-
     for (i, chr) in instuctions.chars().enumerate() {
-        let current_santa = if i % 2 == 0 {
-            &mut santa
-        } else {
-            &mut robot
-        };
+        let current_santa = if i % 2 == 0 { &mut santa } else { &mut robot };
 
         #[cfg(test)]
         println!("Current Santa {}", i % 2);
@@ -99,26 +89,25 @@ fn get_houses_with_robot(instuctions: String) -> i32 {
         current_santa.house.next_house(chr);
         let point = current_santa.house;
         current_santa.seen.insert(point);
-
     }
 
-        #[cfg(test)]
-        {
-            println!("Robot: {:?}", robot);
-            println!("Santa: {:?}", santa);
-        }
+    #[cfg(test)]
+    {
+        println!("Robot: {:?}", robot);
+        println!("Santa: {:?}", santa);
+    }
 
     santa.seen.union(&robot.seen).count() as i32
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let mut solution = Solution {part1: 0, part2: 0};
+    let mut solution = Solution { part1: 0, part2: 0 };
 
     let file = fs::read_to_string("./src/input.txt")?;
-    
+
     solution.part1 = get_houses(file.clone());
     solution.part2 = get_houses_with_robot(file.clone());
-    
+
     println!("{}", solution.part1);
     println!("{}", solution.part2);
 
@@ -128,7 +117,6 @@ fn main() -> Result<(), Box<dyn Error>> {
 #[cfg(test)]
 mod tests {
     use crate::{get_houses, get_houses_with_robot};
-
 
     #[test]
     fn example_1() {
@@ -165,5 +153,4 @@ mod tests {
         let answer = get_houses_with_robot("^v^v^v^v^v".to_string());
         assert_eq!(answer, 11)
     }
-
 }
